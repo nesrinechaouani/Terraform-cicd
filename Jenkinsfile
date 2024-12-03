@@ -14,19 +14,19 @@ pipeline {
         stage('Terraform Init') {
             steps {
                 // Initialiser Terraform
-                bat 'terraform init'
+                sh 'terraform init'
             }
         }
         stage('Terraform Plan') {
             steps {
                 // Générer un plan Terraform
-                bat 'terraform plan -out=tfplan'
+                sh 'terraform plan -out=tfplan'
             }
         }
         stage('Terraform Apply') {
             steps {
                 // Appliquer les changements
-                bat 'terraform apply -auto-approve tfplan'
+                sh 'terraform apply -auto-approve tfplan'
             }
         }
     }

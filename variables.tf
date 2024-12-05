@@ -17,3 +17,15 @@ variable "app_service_name" {
   description = "The name of the App Service"
   default     = "myAppService"
 }
+variable "subscription_id" {
+  type = string
+}
+variable "tenant_id" {
+  type = string
+}
+variable "client_id" {
+  type = string
+}
+variable "client_secret"{
+ type = string
+}

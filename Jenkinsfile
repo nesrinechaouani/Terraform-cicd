@@ -17,9 +17,9 @@ pipeline {
                 bat 'terraform init'
             }
         }
+
         stage('Terraform Import') {
             steps {
-                // Importer le groupe de ressources s'il existe déjà
                 script {
                     def resourceGroupExists = bat(script: 'az group show --name myResourceGroup', returnStatus: true) == 0
                     if (resourceGroupExists) {
@@ -31,6 +31,7 @@ pipeline {
                 }
             }
         }
+
         stage('Terraform Plan') {
             steps {
                 // Générer un plan Terraform

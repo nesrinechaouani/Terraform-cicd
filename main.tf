@@ -34,9 +34,38 @@ resource "azurerm_app_service_plan" "example" {
 #  kind = "Windows" # Assurez-vous de spécifier le type d'OS avec 'kind' pour Linux ou Windows selon le besoin
 }
 
+#resource "azurerm_app_service" "example" {
+#  name                = "myAppService1"
+#  location            = azurerm_resource_group.example.location
+#  resource_group_name = azurerm_resource_group.example.name
+#  app_service_plan_id = azurerm_app_service_plan.example.id
+#}
+
 resource "azurerm_app_service" "example" {
-  name                = "myAppService1"
-  location            = azurerm_resource_group.example.location
-  resource_group_name = azurerm_resource_group.example.name
-  app_service_plan_id = azurerm_app_service_plan.example.id
+  name                     = "myAppService1"
+  location                 = azurerm_resource_group.example.location
+  resource_group_name      = azurerm_resource_group.example.name
+  app_service_plan_id      = azurerm_app_service_plan.example.id
+
+  app_settings = {
+    "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
+  }
+
+  site_config {
+    python_version = "3.8"
+    linux_fx_version = "PYTHON|3.8"
+  }
+
+  identity {
+    type = "SystemAssigned"
+  }
 }
+
+resource "azurerm_app_service_source_control" "example" {
+  app_id                = azurerm_app_service.example.id
+  repo_url              = "https://github.com/nesrinechaouani/Terraform-cicd"
+  branch                = "main"
+  use_manual_integration = false
+  scm_type              = "GitHub"
+}
+

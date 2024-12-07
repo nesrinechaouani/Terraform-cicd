@@ -17,6 +17,20 @@ pipeline {
                 bat 'terraform init'
             }
         }
+        stage('Terraform Import') {
+            steps {
+                // Importer le groupe de ressources s'il existe déjà
+                script {
+                    def resourceGroupExists = bat(script: 'az group show --name myResourceGroup', returnStatus: true) == 0
+                    if (resourceGroupExists) {
+                        echo 'Resource group already exists, importing it into Terraform state.'
+                        bat 'terraform import azurerm_resource_group.example /subscriptions/304799ce-2258-416d-85f2-8c42149f7550/resourceGroups/myResourceGroup'
+                    } else {
+                        echo 'Resource group does not exist, no import needed.'
+                    }
+                }
+            }
+        }
         stage('Terraform Plan') {
             steps {
                 // Générer un plan Terraform

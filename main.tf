@@ -31,7 +31,7 @@ resource "azurerm_app_service_plan" "example" {
     size = "S1"
   }
 
-  kind = "Windows" # Assurez-vous de spécifier le type d'OS avec 'kind' pour Linux ou Windows selon le besoin
+#  kind = "Windows" # Assurez-vous de spécifier le type d'OS avec 'kind' pour Linux ou Windows selon le besoin
 }
 
 resource "azurerm_app_service" "example" {

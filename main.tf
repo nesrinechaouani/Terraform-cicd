@@ -25,12 +25,14 @@ resource "azurerm_service_plan" "example" {
   location            = azurerm_resource_group.example.location
   resource_group_name = azurerm_resource_group.example.name
 
-  sku {
-    tier = "Standard"
-    size = "S1"
-  }
+  # Required argument for OS type (either "Windows" or "Linux")
+  os_type = "Windows"
 
-  kind = "Windows" # Ensure to specify the OS type, 'Windows' or 'Linux'
+  # Required argument for SKU
+  sku_name = "S1"  # Example SKU, change as necessary
+
+  # Specify the kind (Windows or Linux) depending on your requirements
+  kind = "Windows"
 }
 
 resource "azurerm_app_service" "example" {

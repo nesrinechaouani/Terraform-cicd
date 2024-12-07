@@ -30,9 +30,6 @@ resource "azurerm_service_plan" "example" {
 
   # Required argument for SKU
   sku_name = "S1"  # Example SKU, change as necessary
-
-  # Specify the kind (Windows or Linux) depending on your requirements
-  kind = "Windows"
 }
 
 resource "azurerm_app_service" "example" {

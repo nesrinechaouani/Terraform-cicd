@@ -11,6 +11,13 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/nesrinechaouani/Terraform-cicd.git'
             }
         }
+        stage('Azure Login') {
+            steps {
+                script {
+                    bat 'az login --service-principal -u 7ed1097c-36a3-4b50-9bc6-c0b2f91968fc -p T7O8Q~XyRzigy6S5PkFnBEdYFUxu5wo4CMCHiagF --tenant dbd6664d-4eb9-46eb-99d8-5c43ba153c61'
+                }
+            }
+        }
         stage('Terraform Init') {
             steps {
                 // Initialiser Terraform

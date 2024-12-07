@@ -13,7 +13,6 @@ provider "azurerm" {
   client_id       = "7ed1097c-36a3-4b50-9bc6-c0b2f91968fc"
   client_secret   = "S-88Q~ppK10dMxkusnTJS4L8wlvDff3CagXRTazg"
   tenant_id       = "dbd6664d-4eb9-46eb-99d8-5c43ba153c61"
-
 }
 
 resource "azurerm_resource_group" "example" {
@@ -21,7 +20,7 @@ resource "azurerm_resource_group" "example" {
   location = "North Europe"
 }
 
-resource "azurerm_app_service_plan" "example" {
+resource "azurerm_service_plan" "example" {
   name                = "myAppServicePlan"
   location            = azurerm_resource_group.example.location
   resource_group_name = azurerm_resource_group.example.name
@@ -31,12 +30,12 @@ resource "azurerm_app_service_plan" "example" {
     size = "S1"
   }
 
-  kind = "Windows" # Assurez-vous de spécifier le type d'OS avec 'kind' pour Linux ou Windows selon le besoin
+  kind = "Windows" # Ensure to specify the OS type, 'Windows' or 'Linux'
 }
 
 resource "azurerm_app_service" "example" {
   name                = "myAppService1"
   location            = azurerm_resource_group.example.location
   resource_group_name = azurerm_resource_group.example.name
-  app_service_plan_id = azurerm_app_service_plan.example.id
+  app_service_plan_id = azurerm_service_plan.example.id
 }

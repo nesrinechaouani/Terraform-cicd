@@ -28,16 +28,23 @@ pipeline {
         stage('Terraform Import') {
             steps {
                 script {
-                    def resourceGroupExists = bat(script: 'az group show --name myResourceGroup', returnStatus: true) == 0
-                    if (resourceGroupExists) {
-                        echo 'Resource group already exists, importing it into Terraform state.'
-                        bat 'terraform import azurerm_resource_group.example /subscriptions/304799ce-2258-416d-85f2-8c42149f7550/resourceGroups/myResourceGroup'
+                    // Vérifie si Terraform gère déjà la ressource
+                    def terraformState = bat(script: 'terraform state list', returnStdout: true).trim()
+                    if (!terraformState.contains('azurerm_resource_group.example')) {
+                        def resourceGroupExists = bat(script: 'az group show --name myResourceGroup', returnStatus: true) == 0
+                        if (resourceGroupExists) {
+                            echo 'Resource group already exists, importing it into Terraform state.'
+                            bat 'terraform import azurerm_resource_group.example /subscriptions/304799ce-2258-416d-85f2-8c42149f7550/resourceGroups/myResourceGroup'
+                        } else {
+                            echo 'Resource group does not exist, no import needed.'
+                        }
                     } else {
-                        echo 'Resource group does not exist, no import needed.'
+                        echo 'Resource group is already managed by Terraform. Skipping import.'
                     }
                 }
             }
         }
+
 
         stage('Terraform Plan') {
             steps {

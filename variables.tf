@@ -12,6 +12,12 @@ variable "app_service_plan_name" {
   description = "The name of the App Service Plan"
   default     = "myAppServicePlan"
 }
+
+variable "subscription_id" {}
+variable "client_id" {}
+variable "client_secret" {}
+variable "tenant_id" {}
+
 #export ARM_CLIENT_ID=7ed1097c-36a3-4b50-9bc6-c0b2f91968fc
 #export ARM_CLIENT_SECRET=S-88Q~ppK10dMxkusnTJS4L8wlvDff3CagXRTazg
 #export ARM_SUBSCRIPTION_ID=304799ce-2258-416d-85f2-8c42149f7550

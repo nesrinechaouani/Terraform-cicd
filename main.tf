@@ -9,10 +9,10 @@ terraform {
 
 provider "azurerm" {
   features {}
-  subscription_id = "304799ce-2258-416d-85f2-8c42149f7550"
-  client_id       = "7ed1097c-36a3-4b50-9bc6-c0b2f91968fc"
-  client_secret   = "T7O8Q~XyRzigy6S5PkFnBEdYFUxu5wo4CMCHiagF"
-  tenant_id       = "dbd6664d-4eb9-46eb-99d8-5c43ba153c61"
+  subscription_id = var.subscription_id
+  client_id       = var.client_id
+  client_secret   = var.client_secret
+  tenant_id       = var.tenant_id
 
 }
 
@@ -41,31 +41,28 @@ resource "azurerm_app_service_plan" "example" {
 #  app_service_plan_id = azurerm_app_service_plan.example.id
 #}
 
+
 resource "azurerm_app_service" "example" {
-  name                     = "myAppService1"
-  location                 = azurerm_resource_group.example.location
-  resource_group_name      = azurerm_resource_group.example.name
-  app_service_plan_id      = azurerm_app_service_plan.example.id
+  name                = "myAppService1"
+  location            = azurerm_resource_group.example.location
+  resource_group_name = azurerm_resource_group.example.name
+  app_service_plan_id = azurerm_app_service_plan.example.id
 
   app_settings = {
     "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
+    "WEBSITES_PORT"                       = "5000"  # Port par défaut pour Flask
+    "FLASK_APP"                           = "app.py"
   }
 
   site_config {
-    python_version = "3.8"
-    linux_fx_version = "PYTHON|3.8"
+    linux_fx_version = "PYTHON|3.9"
   }
 
-  identity {
-    type = "SystemAssigned"
-  }
+  https_only = true
 }
-
-resource "azurerm_app_service_source_control" "example" {
-  app_id                = azurerm_app_service.example.id
-  repo_url              = "https://github.com/nesrinechaouani/Terraform-cicd"
-  branch                = "main"
-  use_manual_integration = false
-  scm_type              = "GitHub"
+resource "azurerm_app_service_source_control" "source_control" {
+  app_id     = azurerm_app_service.example.id
+  repo_url   = "https://github.com/nesrinechaouani/Terraform-cicd.git"
+  branch     = "main"
+  use_manual_integration = true
 }
-

@@ -68,3 +68,16 @@ pipeline {
         }
     }
 }
+    post {
+         success {
+             mail to: ’nesrine.chaouani@insat.ucar.tn’,
+             subject: ’Pipeline␣Success’,
+             body: ’Le␣pipeline␣Terraform␣a␣ete␣execute␣avec␣succes.’
+         }
+         failure {
+             mail to: ’nesrine.chaouani@insat.ucar.tn’,
+             subject: ’Pipeline␣Failure’,
+             body: ’Le␣pipeline␣Terraform␣a␣echoue.␣Veuillez␣verifier␣les␣
+             logs␣pour␣plus␣de␣details.’
+         }
+    }
